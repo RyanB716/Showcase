@@ -1,22 +1,20 @@
 extends CanvasLayer
+class_name PlayerUI
 
 @export var player : Player
 @export var StatueMenu : Statue_Menu
+@export var Shop : ShopMenu
+@export var AttackIcons : AttackIndicators
+@export var XPLabel : Label
+@export var XpAmount : Label
+@export var CurrentItem : Current_Item
+@export var CoinLabel : Label
 
 func _ready():
-	pass
+	AttackIcons.SetMaxIcons()
 	
 func _process(_delta):
-	if player.InventoryRef.CurrentElixir.Amount > 0:
-		$CurrentItem.visible = true
-		$CurrentItem/TextureRect.texture = player.InventoryRef.CurrentElixir.Item.Icon
-		$CurrentItem/Label.text = str(player.InventoryRef.CurrentElixir.Amount)
-	else:
-		$CurrentItem.visible = false
-		$CurrentItem/TextureRect.texture = null
-		$CurrentItem/Label.text = ""
-		
-	$"Coin Amount".text = ("$:" + str(player.InventoryRef.CoinCount))
+	CoinLabel.text = ("$:" + str(player.InventoryRef.CoinCount))
 
 #Toggles the visibility of the Statue Menu node
 func ToggleStatueMenu():

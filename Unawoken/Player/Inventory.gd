@@ -21,13 +21,14 @@ func _ready():
 			newSlot.Amount = GameSettings.PlayerInventory[i].Amount
 			Elixirs.append(newSlot)
 			print("-Index: " + str(i) + ": " + str(Elixirs[i].Item.Name) + ", " + str(Elixirs[i].Amount))
+			print("\n")
 	else:
 		print("Global Inventory is not populated")
 
 func _process(_delta):
 	CurrentElixir = Elixirs[ElixirIndex]
 	
-	if Input.is_action_just_pressed("UseItem"):
+	if Input.is_action_just_pressed("UseItem") && get_parent().IsInMenu == false:
 		UseCurrentItem()
 	
 	if Input.is_action_just_pressed("CycleElixir"):
@@ -62,13 +63,13 @@ func AddElixir(item : UsableItemResource):
 
 #Uses the current item
 func UseCurrentItem():
-	$InventoryAudio.stream = CurrentElixir.Item.UseSFX
-	$InventoryAudio.play()
 	if CurrentElixir.Amount> 0:
 		var player = get_parent()
 		if player is Player:
 			if CurrentElixir.Item.StatType == CurrentElixir.Item.StatTypes.Health:
 				if player.CurrentHealth < player.MaxHealth && player.IsHealing == false:
+					$InventoryAudio.stream = CurrentElixir.Item.UseSFX
+					$InventoryAudio.play()
 					CurrentElixir.Amount -= 1
 					var AmntToAdd : int = int(player.MaxHealth * (CurrentElixir.Item.AmountInPercent * 0.01))
 					player.RegainHealth(AmntToAdd)
